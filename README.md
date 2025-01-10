@@ -1,13 +1,13 @@
 # Sheet-Flow 📊
 
 <div align="center">
-
-![Sheet-Flow Logo](https://raw.githubusercontent.com/SH20RAJ/SheetFlow/main/logo.svg)
+<img src="https://raw.githubusercontent.com/SH20RAJ/SheetFlow/refs/heads/main/logo.svg" width="200" height="66" />
 
 [![npm version](https://img.shields.io/npm/v/@sh20raj/sheet-flow.svg)](https://www.npmjs.com/package/@sh20raj/sheet-flow)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![Visitors](https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fgithub.com%2FSH20RAJ%2FSheetFlow&labelColor=%2337d67a&countColor=%23ba68c8&style=flat)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FSH20RAJ%2FSheetFlow)
 
 </div>
 
