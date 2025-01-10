@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Sheet-Flow Logo](assets/logo.png)
+![Sheet-Flow Logo](https://raw.githubusercontent.com/SH20RAJ/SheetFlow/main/logo.svg)
 
 [![npm version](https://img.shields.io/npm/v/@sh20raj/sheet-flow.svg)](https://www.npmjs.com/package/@sh20raj/sheet-flow)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
