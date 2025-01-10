@@ -1,4 +1,4 @@
-import { SheetFlow } from '../src';
+import { SheetFlow } from '@sh20raj/sheet-flow';
 
 async function main() {
   // Initialize SheetFlow with your Google Sheets credentials

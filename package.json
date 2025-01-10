@@ -1,5 +1,5 @@
 {
-  "name": "sheetflow",
+  "name": "@sh20raj/sheet-flow",
   "version": "1.0.0",
   "description": "Transform Google Sheets into powerful, customizable REST APIs with real-time sync and advanced features",
   "main": "dist/index.js",

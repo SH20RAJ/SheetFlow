@@ -1,17 +1,17 @@
-# SheetFlow 📊
+# Sheet-Flow 📊
 
 <div align="center">
 
-![SheetFlow Logo](assets/logo.png)
+![Sheet-Flow Logo](assets/logo.png)
 
-[![npm version](https://img.shields.io/npm/v/sheetflow.svg)](https://www.npmjs.com/package/sheetflow)
+[![npm version](https://img.shields.io/npm/v/@sh20raj/sheet-flow.svg)](https://www.npmjs.com/package/@sh20raj/sheet-flow)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
 </div>
 
-**SheetFlow** transforms your Google Sheets into powerful, production-ready databases with a RESTful API interface. Built for modern applications, it provides enterprise-grade features while maintaining the simplicity and flexibility of spreadsheets.
+**Sheet-Flow** transforms your Google Sheets into powerful, production-ready databases with a RESTful API interface. Built for modern applications, it provides enterprise-grade features while maintaining the simplicity and flexibility of spreadsheets.
 
 ## 🌟 Key Features
 
@@ -50,13 +50,13 @@
 ### Installation
 
 ```bash
-npm install sheetflow
+npm install @sh20raj/sheet-flow
 ```
 
 ### Basic Usage
 
 ```typescript
-import { SheetFlow } from 'sheetflow';
+import { SheetFlow } from '@sh20raj/sheet-flow';
 
 // Initialize SheetFlow
 const sheetflow = new SheetFlow({
@@ -152,7 +152,7 @@ const config: SheetFlowConfig = {
 ### API Key Authentication
 
 ```typescript
-import { SheetFlow, auth } from 'sheetflow';
+import { SheetFlow, auth } from '@sh20raj/sheet-flow';
 
 const app = express();
 
@@ -285,7 +285,7 @@ sheetflow.on('query', (stats) => {
 ## 🔄 Migration Tools
 
 ```typescript
-import { migrate } from 'sheetflow/tools';
+import { migrate } from '@sh20raj/sheet-flow/tools';
 
 // Create a migration
 const migration = {
@@ -306,7 +306,7 @@ await migrate.up();
 ## 🧪 Testing
 
 ```typescript
-import { createTestClient } from 'sheetflow/testing';
+import { createTestClient } from '@sh20raj/sheet-flow/testing';
 
 describe('User API', () => {
   let client;
@@ -335,13 +335,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙋‍♂️ Support
 
-- 📚 [Documentation](https://sheetflow.docs.com)
-- 💬 [Discord Community](https://discord.gg/sheetflow)
-- 🐛 [Issue Tracker](https://github.com/username/sheetflow/issues)
-- 📧 [Email Support](mailto:support@sheetflow.com)
+- 📚 [Documentation](https://sheet-flow.docs.com)
+- 💬 [Discord Community](https://discord.gg/sheet-flow)
+- 🐛 [Issue Tracker](https://github.com/username/sheet-flow/issues)
+- 📧 [Email Support](mailto:support@sheet-flow.com)
 
 ---
 
 <div align="center">
-Made with ❤️ by the SheetFlow Team
+Made with ❤️ by the Sheet-Flow Team
 </div>
