@@ -1,142 +1,347 @@
-# SheetFlow
+# SheetFlow 📊
 
-**SheetFlow** is an open-source platform that turns your spreadsheets (Google Sheets, Excel, etc.) into powerful, customizable REST APIs. Designed for developers and non-developers alike, SheetFlow enables seamless data integration and management, making spreadsheets act as lightweight, dynamic databases.
+<div align="center">
 
----
+![SheetFlow Logo](assets/logo.png)
 
-## Features
+[![npm version](https://img.shields.io/npm/v/sheetflow.svg)](https://www.npmjs.com/package/sheetflow)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-### Core Features:
-- **Spreadsheet-to-API Conversion**: Instantly convert your Google Sheets or Excel files into RESTful APIs.
-- **Real-Time Data Sync**: Reflect changes in your spreadsheet in real-time via the API.
-- **Custom Endpoints**: Tailor API endpoints to suit your application’s needs.
-- **Data Querying and Filtering**: Retrieve specific data with advanced filters and query parameters.
-- **Secure API Access**: Authentication options to protect your data.
+</div>
 
-### Advanced Features:
-- **Self-Hosting**: Deploy SheetFlow on your own server for complete control and privacy.
-- **Webhooks**: Trigger events when spreadsheet data is updated.
-- **Multi-Source Support**: Integrate data from Google Sheets, Excel, and more.
-- **Analytics**: Gain insights into API usage with built-in analytics tools.
+**SheetFlow** transforms your Google Sheets into powerful, production-ready databases with a RESTful API interface. Built for modern applications, it provides enterprise-grade features while maintaining the simplicity and flexibility of spreadsheets.
 
----
+## 🌟 Key Features
 
-## Getting Started
+### Core Functionality
+- **🔄 Real-Time Sync**: Bi-directional synchronization between your API and spreadsheets
+- **🔐 Enterprise-Grade Security**: Row-level access control, API key authentication, and rate limiting
+- **🚀 High Performance**: Intelligent caching and connection pooling for optimal performance
+- **📦 Type Safety**: Full TypeScript support with automatic type inference from sheet headers
 
-### Prerequisites
-- Node.js (v14+ recommended)
-- Google Sheets API credentials (for Google Sheets integration)
-- [Optional] Docker (for self-hosted deployment)
+### Advanced Features
+- **🔍 Advanced Querying**
+  - Complex filters and search operations
+  - Pagination and sorting
+  - Relationship support between sheets
+  - Aggregation functions
+  
+- **🎯 Data Validation**
+  - Schema validation using Joi
+  - Custom validation rules
+  - Data transformation hooks
+  
+- **🔌 Integration Features**
+  - Webhooks for real-time updates
+  - Event system for data changes
+  - Custom middleware support
+  - Batch operations
+  
+- **🛠 Developer Experience**
+  - Auto-generated TypeScript types
+  - Comprehensive error handling
+  - Detailed logging and monitoring
+  - OpenAPI/Swagger documentation
+
+## 📚 Quick Start
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/sheetflow.git
-   cd sheetflow
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Configure environment variables:
-   - Copy the `.env.example` file to `.env`:
-     ```bash
-     cp .env.example .env
-     ```
-   - Update the `.env` file with your Google Sheets API credentials.
-
-4. Start the development server:
-   ```bash
-   npm start
-   ```
-
-5. Access the app at `http://localhost:3000`.
-
----
-
-## API Usage
-
-### Base URL
-```
-http://localhost:3000/api
-```
-
-### Endpoints
-#### 1. **GET /sheet/:sheetId**
-Retrieve data from a specified sheet.
-
-Example:
 ```bash
-GET /sheet/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms
+npm install sheetflow
 ```
 
-#### 2. **POST /sheet/:sheetId**
-Insert new data into the sheet.
+### Basic Usage
 
-Example:
-```bash
-POST /sheet/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms
-{
-  "name": "John",
-  "age": 30
+```typescript
+import { SheetFlow } from 'sheetflow';
+
+// Initialize SheetFlow
+const sheetflow = new SheetFlow({
+  credentials: {
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY,
+  },
+  spreadsheetId: 'your-spreadsheet-id'
+});
+
+// Define your schema (optional)
+const userSchema = {
+  name: 'string:required',
+  email: 'string:email:required',
+  age: 'number:min(0)',
+};
+
+// Create a table
+const Users = sheetflow.defineTable('Users', {
+  schema: userSchema,
+  timestamps: true, // Adds createdAt and updatedAt
+});
+
+// CRUD Operations
+async function examples() {
+  // Create
+  const newUser = await Users.create({
+    name: 'John Doe',
+    email: 'john@example.com',
+    age: 25
+  });
+
+  // Read with filtering
+  const adults = await Users.find({
+    where: {
+      age: { $gte: 18 }
+    },
+    sort: { name: 'asc' },
+    limit: 10
+  });
+
+  // Update
+  await Users.update(
+    { age: { $lt: 18 } },
+    { status: 'minor' }
+  );
+
+  // Delete
+  await Users.delete({
+    email: 'john@example.com'
+  });
 }
 ```
 
-#### 3. **PUT /sheet/:sheetId/:rowId**
-Update a specific row in the sheet.
+## 🔧 Advanced Configuration
 
-#### 4. **DELETE /sheet/:sheetId/:rowId**
-Delete a specific row from the sheet.
+```typescript
+const config: SheetFlowConfig = {
+  credentials: {
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY,
+  },
+  spreadsheetId: 'your-spreadsheet-id',
+  options: {
+    cache: {
+      enabled: true,
+      ttl: 60000, // 1 minute
+    },
+    sync: {
+      interval: 5000, // 5 seconds
+      strategy: 'optimistic',
+    },
+    security: {
+      encryption: {
+        enabled: true,
+        fields: ['email', 'phone'],
+      },
+      rateLimit: {
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 100, // limit each IP to 100 requests per windowMs
+      },
+    },
+    logging: {
+      level: 'info',
+      format: 'json',
+    },
+  },
+};
+```
+
+## 🔐 Authentication & Security
+
+### API Key Authentication
+
+```typescript
+import { SheetFlow, auth } from 'sheetflow';
+
+const app = express();
+
+// Add authentication middleware
+app.use(auth.apiKey({
+  header: 'X-API-Key',
+  keys: ['your-api-key'],
+}));
+```
+
+### Row-Level Security
+
+```typescript
+const Users = sheetflow.defineTable('Users', {
+  schema: userSchema,
+  security: {
+    policies: {
+      read: (user, row) => user.id === row.userId || user.role === 'admin',
+      write: (user, row) => user.role === 'admin',
+    },
+  },
+});
+```
+
+## 🎯 Event Handling
+
+```typescript
+// Subscribe to events
+Users.on('beforeCreate', async (data) => {
+  // Validate or transform data before creation
+  data.createdBy = currentUser.id;
+});
+
+Users.on('afterUpdate', async (oldData, newData) => {
+  // Trigger webhooks or other side effects
+  await notifyWebhooks({
+    event: 'user.updated',
+    data: { old: oldData, new: newData },
+  });
+});
+```
+
+## 📊 Relationships & Joins
+
+```typescript
+const Orders = sheetflow.defineTable('Orders', {
+  schema: orderSchema,
+  relationships: {
+    user: {
+      type: 'belongsTo',
+      table: 'Users',
+      foreignKey: 'userId',
+    },
+  },
+});
+
+// Query with joins
+const ordersWithUsers = await Orders.find({
+  include: ['user'],
+  where: {
+    'user.country': 'USA',
+  },
+});
+```
+
+## 🔍 Advanced Queries
+
+```typescript
+// Complex filtering
+const results = await Users.find({
+  where: {
+    $or: [
+      { age: { $gt: 18 } },
+      { status: 'approved' },
+    ],
+    country: { $in: ['USA', 'Canada'] },
+    lastLogin: { $gte: new Date('2023-01-01') },
+  },
+  select: ['id', 'name', 'email'],
+  sort: { age: 'desc' },
+  limit: 20,
+  offset: 0,
+});
+
+// Aggregations
+const stats = await Users.aggregate({
+  $group: {
+    _id: '$country',
+    avgAge: { $avg: '$age' },
+    total: { $count: true },
+  },
+  having: {
+    total: { $gt: 100 },
+  },
+});
+```
+
+## 🚨 Error Handling
+
+```typescript
+try {
+  await Users.create({
+    name: 'John',
+    email: 'invalid-email',
+  });
+} catch (error) {
+  if (error instanceof SheetFlowValidationError) {
+    console.error('Validation failed:', error.details);
+  } else if (error instanceof SheetFlowConnectionError) {
+    console.error('Connection failed:', error.message);
+  }
+}
+```
+
+## 📈 Monitoring & Logging
+
+```typescript
+// Custom logger
+sheetflow.setLogger({
+  info: (msg, meta) => winston.info(msg, meta),
+  error: (msg, meta) => winston.error(msg, meta),
+});
+
+// Monitor performance
+sheetflow.on('query', (stats) => {
+  console.log(`Query took ${stats.duration}ms`);
+});
+```
+
+## 🔄 Migration Tools
+
+```typescript
+import { migrate } from 'sheetflow/tools';
+
+// Create a migration
+const migration = {
+  up: async (sheet) => {
+    await sheet.addColumn('status', { type: 'string', default: 'active' });
+    await sheet.renameColumn('userName', 'fullName');
+  },
+  down: async (sheet) => {
+    await sheet.removeColumn('status');
+    await sheet.renameColumn('fullName', 'userName');
+  },
+};
+
+// Run migrations
+await migrate.up();
+```
+
+## 🧪 Testing
+
+```typescript
+import { createTestClient } from 'sheetflow/testing';
+
+describe('User API', () => {
+  let client;
+
+  beforeEach(() => {
+    client = createTestClient();
+  });
+
+  it('should create a user', async () => {
+    const user = await client.Users.create({
+      name: 'Test User',
+      email: 'test@example.com',
+    });
+    expect(user.id).toBeDefined();
+  });
+});
+```
+
+## 📝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙋‍♂️ Support
+
+- 📚 [Documentation](https://sheetflow.docs.com)
+- 💬 [Discord Community](https://discord.gg/sheetflow)
+- 🐛 [Issue Tracker](https://github.com/username/sheetflow/issues)
+- 📧 [Email Support](mailto:support@sheetflow.com)
 
 ---
 
-## Contributing
-We welcome contributions from the community! To get started:
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix:
-   ```bash
-   git checkout -b feature/my-feature
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add my new feature"
-   ```
-4. Push to your branch:
-   ```bash
-   git push origin feature/my-feature
-   ```
-5. Submit a pull request.
-
----
-
-## License
-SheetFlow is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute this project as per the terms of the license.
-
----
-
-## Community and Support
-- **GitHub Discussions**: Join the conversation and share your ideas.
-- **Issues**: Report bugs or request features via [GitHub Issues](https://github.com/your-username/sheetflow/issues).
-- **Email**: Reach out to us at support@sheetflow.io.
-
----
-
-## Roadmap
-- **v1.0**:
-  - Google Sheets support
-  - Basic API features (CRUD)
-- **v1.1**:
-  - Excel file support
-  - Advanced filtering and analytics
-- **v2.0**:
-  - Webhooks and self-hosted version
-  - Multi-source integrations
-
----
-
-## Acknowledgments
-Special thanks to the open-source community and projects like [SheetDB.io](https://sheetdb.io/) for inspiring the development of SheetFlow.
-
+<div align="center">
+Made with ❤️ by the SheetFlow Team
+</div>
